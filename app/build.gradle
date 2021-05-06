@@ -52,6 +52,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     testImplementation "com.google.truth:truth:1.1.2"
+
+    implementation 'com.karumi:dexter:6.2.2'
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }
 
 task installGitHook(type: Copy) {

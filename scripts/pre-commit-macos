@@ -12,6 +12,6 @@ if [ "$status" != 0 ]
     echo 1>&2 "Static analysis found formatting errors. Run ./gradlew ktlintCheck in the terminal for checks"
     exit 1
 else
-    echo "Formatting checks all passed"
+   echo "Formatting checks all passed"
     exit 0
  fi
