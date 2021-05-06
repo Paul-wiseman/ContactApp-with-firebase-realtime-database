@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.TextUtils
 import android.view.View
-import android.widget.Adapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.wiseman.paul.myapplication.R
 
 open class CreateNewContactActivity : AppCompatActivity() {
@@ -20,7 +18,7 @@ open class CreateNewContactActivity : AppCompatActivity() {
     lateinit var phoneEdt: EditText // creating a new variable for our edit text and button.
     lateinit var emailEdt: EditText
     lateinit var addContactEdt: Button
-    lateinit var ContactsRVAdapter:ContactsRVAdapter
+    lateinit var ContactsRVAdapter: ContactsRVAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_contact)
@@ -68,7 +66,7 @@ open class CreateNewContactActivity : AppCompatActivity() {
             .putExtra(ContactsContract.Intents.Insert.PHONE, phone)
             .putExtra(ContactsContract.Intents.Insert.EMAIL, email)
         startActivityForResult(contactIntent, 1)
-        var contact = ContactsModel(name,phone)
+        var contact = ContactsModel(name, phone)
         ContactsRVAdapter.contactsModelArrayList.add(contact)
         finish()
     }

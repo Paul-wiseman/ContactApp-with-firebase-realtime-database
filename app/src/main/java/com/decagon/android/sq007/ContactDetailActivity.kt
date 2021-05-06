@@ -49,13 +49,11 @@ class ContactDetailActivity : AppCompatActivity() {
             }
         })
 
-        messageIV.setOnClickListener(object : View.OnClickListener{
+        messageIV.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 sendMessage(contactNumber)
             }
-
         })
-
     }
 
     private fun sendMessage(contactNumber: String) {

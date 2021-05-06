@@ -11,8 +11,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.amulyakhare.textdrawable.TextDrawable
 import com.amulyakhare.textdrawable.util.ColorGenerator
-import com.decagon.android.sq007.ContactDetailActivity
-import com.decagon.android.sq007.ContactsModel
 import com.wiseman.paul.myapplication.R
 
 class ContactsRVAdapter
