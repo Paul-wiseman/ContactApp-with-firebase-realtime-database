@@ -20,11 +20,9 @@ constructor( // creating variables for context and array list.
 ) : RecyclerView.Adapter<ContactsRVAdapter.MyViewHolder>() {
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-
         var contactIV: ImageView = itemView.findViewById(R.id.idIVContact)
         var contactTVName: TextView = itemView.findViewById(R.id.idTVContactName)
-        var contactTVPhoneNumber:TextView = itemView.findViewById(R.id.idTVContactPhoneNumber)
-
+        var contactTVPhoneNumber: TextView = itemView.findViewById(R.id.idTVContactPhoneNumber)
     }
 
     override fun onCreateViewHolder(
@@ -49,7 +47,7 @@ constructor( // creating variables for context and array list.
         var model = contactsModelArrayList[position]
         // on below line we are setting data to our text view.
         holder.contactTVName.text = model.contactName
-        holder.contactTVPhoneNumber.text= model.contactPhoneNumber
+        holder.contactTVPhoneNumber.text = model.contactPhoneNumber
         Log.d("Adapter", "${model.contactName}")
 //        holder.contactTVPhoneNumber.text = model.contactPhoneNumber
 

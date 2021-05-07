@@ -1,11 +1,6 @@
 package com.decagon.android.sq007
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,7 +25,7 @@ class ContactViewModel : ViewModel() {
     val contact: LiveData<ContactsModel> get() = _contact
 
     /*the function to add contact to fire base*/
-    fun  addContact(contact: ContactsModel) {
+    fun addContact(contact: ContactsModel) {
         contact.id = dbcontacts.push().key // generating a key for the contact object
 
         /* to save the contact in the firebase we use the below method getting the id and passing in the contact
@@ -56,13 +51,11 @@ class ContactViewModel : ViewModel() {
             contact?.id = snapshot.key // getting the id of the contact
             _contact.value = contact!! // putting the value into a contact object
             Log.d("Childeventlistener", "$contact")
-
         }
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
             val contact = snapshot.getValue(ContactsModel::class.java)
             contact?.id = snapshot.key
             _contact.value = contact!!
-
         }
         override fun onChildRemoved(snapshot: DataSnapshot) {
             val contact = snapshot.getValue(ContactsModel::class.java)
@@ -111,7 +104,4 @@ class ContactViewModel : ViewModel() {
         super.onCleared()
         dbcontacts.removeEventListener(childEventListener)
     }
-
-
-
 }

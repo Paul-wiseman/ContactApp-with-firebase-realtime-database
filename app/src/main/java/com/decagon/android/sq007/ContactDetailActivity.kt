@@ -1,9 +1,6 @@
 package com.decagon.android.sq007
 
 import android.Manifest
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -108,7 +105,7 @@ class ContactDetailActivity : AppCompatActivity() {
         startActivity(callIntent)
     }
 
-    //share phone number function
+    // share phone number function
     private fun sharePhone(name: String, phone: String) {
         val myIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -119,4 +116,3 @@ class ContactDetailActivity : AppCompatActivity() {
         startActivity(shareIntent)
     }
 }
-

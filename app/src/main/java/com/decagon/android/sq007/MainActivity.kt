@@ -58,9 +58,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // calling a method to request permissions.
         requestPermissions()
         viewModel.getRealtimeUpdate()
-        viewModel.contact.observe(this, Observer {
-            contactsRVAdapter.contactsModelArrayList.add(it)
-        })
+        viewModel.contact.observe(
+            this,
+            Observer {
+                contactsRVAdapter.contactsModelArrayList.add(it)
+            }
+        )
         /*simpleCallBAck object is passed as a parameter of the itemTouchHelper object*/
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         /*attaching the item touch helper to our recycler view*/
@@ -302,7 +305,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         if (cursor != null) {
                             displayName =
                                 cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-
                         }
                         // on below line we are calling a content resolver and making a query
                         val phoneCursor: Cursor? = contentResolver.query(
@@ -313,7 +315,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                             null
                         )
                         // on below line we are moving our cursor to next position.
-                        if (phoneCursor != null) {3
+                        if (phoneCursor != null) {
+                            3
                             if (phoneCursor.moveToNext()) {
                                 // on below line we are getting the phone number for our users and then adding the name along with phone number in array list.
                                 val phoneNumber: String =
@@ -326,7 +329,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                                 contact.contactPhoneNumber = phoneNumber
 
                                 contactsModelArrayList.add(contact)
-
                             }
                         }
                         // on below line we are closing our phone cursor.

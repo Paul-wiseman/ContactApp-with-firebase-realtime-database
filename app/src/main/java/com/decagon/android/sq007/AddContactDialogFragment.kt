@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.wiseman.paul.myapplication.R
 import com.wiseman.paul.myapplication.databinding.FragmentAddContactDialogBinding
 

@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.wiseman.paul.myapplication.databinding.FragmentUpdateContactDialogBinding
 
-
 // this is responsible for the dialog fragment to updating data to firebase
 class UpdateContactDialogFragment(private val contact: ContactsModel) : DialogFragment() {
     private var _binding: FragmentUpdateContactDialogBinding? = null
