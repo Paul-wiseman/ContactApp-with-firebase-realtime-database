@@ -24,7 +24,21 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_toRightOf="@id/idIVContact"
-        android:text="Contact Name"
+        android:text="@string/contact_name"
         android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/idTVContactPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/contact_phonenumber"
+        android:layout_below="@id/idTVContactName"
+        android:layout_toRightOf="@id/idIVContact"
+        android:textColor="@color/black"
+        />
+
 
 </RelativeLayout>

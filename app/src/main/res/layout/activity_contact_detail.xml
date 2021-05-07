@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactDetailActivity">
+    tools:context="com.decagon.android.sq007.ContactDetailActivity">
 
     <!--image view for contact-->
     <ImageView
@@ -20,7 +20,7 @@
     <!--text view for displaying user name-->
     <TextView
         android:id="@+id/idTVName"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/idIVContact"
         android:background="@color/purple_200"
@@ -28,6 +28,18 @@
         android:text="Name"
         android:textColor="@color/white"
         android:textSize="18sp" />
+    <ImageView
+        android:id="@+id/idIVShare"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_share"
+        app:tint="@color/purple_700"
+        android:layout_below="@+id/idIVContact"
+        android:layout_toEndOf="@+id/idTVName"
+        />6
+
 
     <!--cardview for displaying user contact-->
     <androidx.cardview.widget.CardView
@@ -79,6 +91,7 @@
                 app:tint="@color/purple_700" />
 
         </RelativeLayout>
+
 
     </androidx.cardview.widget.CardView>
 

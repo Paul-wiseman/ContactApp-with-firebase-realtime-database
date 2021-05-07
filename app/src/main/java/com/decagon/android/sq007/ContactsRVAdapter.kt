@@ -2,12 +2,12 @@ package com.decagon.android.sq007
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.amulyakhare.textdrawable.TextDrawable
 import com.amulyakhare.textdrawable.util.ColorGenerator
@@ -19,14 +19,12 @@ constructor( // creating variables for context and array list.
     var contactsModelArrayList: ArrayList<ContactsModel>
 ) : RecyclerView.Adapter<ContactsRVAdapter.MyViewHolder>() {
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var contactIV: ImageView = itemView.findViewById(R.id.idIVContact)
-        var contactTV: TextView = itemView.findViewById(R.id.idTVContactName)
 
-//        fun ViewHolder (itemView: View){
-//            super.itemView
-//            contactIV = itemView.findViewById(R.id.idIVContact)
-//            contactTV = itemView.findViewById(R.id.idTVContactName)
-//        }
+
+        var contactIV: ImageView = itemView.findViewById(R.id.idIVContact)
+        var contactTVName: TextView = itemView.findViewById(R.id.idTVContactName)
+        var contactTVPhoneNumber:TextView = itemView.findViewById(R.id.idTVContactPhoneNumber)
+
     }
 
     override fun onCreateViewHolder(
@@ -50,8 +48,12 @@ constructor( // creating variables for context and array list.
         // getting data from array list in our modal.
         var model = contactsModelArrayList[position]
         // on below line we are setting data to our text view.
-        holder.contactTV.setText(model.userName)
-        var generator: ColorGenerator = ColorGenerator.MATERIAL; // or use DEFAULT
+        holder.contactTVName.text = model.contactName
+        holder.contactTVPhoneNumber.text= model.contactPhoneNumber
+        Log.d("Adapter", "${model.contactName}")
+//        holder.contactTVPhoneNumber.text = model.contactPhoneNumber
+
+        var generator: ColorGenerator = ColorGenerator.MATERIAL // or use DEFAULT
         // generate random color
         var color = generator.randomColor
         // below text drawable is a circular.
@@ -62,7 +64,7 @@ constructor( // creating variables for context and array list.
             // as we are building a circular drawable
             // we are calling a build round method.
             // in that method we are passing our text and color.
-            .buildRound(model.userName.substring(0, 1), color)
+            .buildRound(model.contactName?.substring(0, 1), color)
         // setting image to our image view on below line.
         holder.contactIV.setImageDrawable(drawable2)
         holder.itemView.setOnClickListener(
@@ -70,8 +72,8 @@ constructor( // creating variables for context and array list.
 
                 // on below line we are opening a new activity and passing data to it.
                 var intent = Intent(context, ContactDetailActivity::class.java)
-                intent.putExtra("name", model.userName)
-                intent.putExtra("contact", model.contactNumber)
+                intent.putExtra("name", model.contactName)
+                intent.putExtra("contact", model.contactPhoneNumber)
                 // on below line we are starting a new activity,
                 context.startActivity(intent)
             }

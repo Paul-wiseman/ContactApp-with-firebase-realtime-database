@@ -1,6 +1,9 @@
 package com.decagon.android.sq007
 
 import android.Manifest
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -22,6 +25,8 @@ class ContactDetailActivity : AppCompatActivity() {
     lateinit var contactIV: ImageView
     lateinit var callIV: ImageView
     lateinit var messageIV: ImageView
+    lateinit var shareButton: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_detail)
@@ -39,6 +44,7 @@ class ContactDetailActivity : AppCompatActivity() {
         contactTV.setText(contactNumber)
         callIV = findViewById(R.id.idIVCall)
         messageIV = findViewById(R.id.idIVMessage)
+        shareButton = findViewById(R.id.idIVShare)
 
         // on below line adding click listener for our calling image view.
         // on below line adding click listener for our calling image view.
@@ -54,6 +60,8 @@ class ContactDetailActivity : AppCompatActivity() {
                 sendMessage(contactNumber)
             }
         })
+
+        shareButton.setOnClickListener { sharePhone(contactName, contactNumber) }
     }
 
     private fun sendMessage(contactNumber: String) {
@@ -99,4 +107,16 @@ class ContactDetailActivity : AppCompatActivity() {
         // at last we are starting activity.
         startActivity(callIntent)
     }
+
+    //share phone number function
+    private fun sharePhone(name: String, phone: String) {
+        val myIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "This is $name's Phone Number \n $phone")
+        }
+        val shareIntent = Intent.createChooser(myIntent, "Share $name's Phone number to : ")
+        startActivity(shareIntent)
+    }
 }
+

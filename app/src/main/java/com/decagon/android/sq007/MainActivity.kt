@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
@@ -16,6 +17,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     lateinit var contactRV: RecyclerView
     lateinit var contactsRVAdapter: ContactsRVAdapter
     lateinit var loadingPB: ProgressBar
-
+    private lateinit var viewModel: ContactViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,20 +47,68 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // on below line we are initializing our variables.
         contactsModelArrayList = ArrayList()
         contactRV = findViewById(R.id.idRVContacts)
-        var addNewContactFAB: FloatingActionButton = findViewById(R.id.idFABadd)
+        val addNewContactFAB: FloatingActionButton = findViewById(R.id.idFABadd)
         loadingPB = findViewById(R.id.idPBLoading)
+
+        viewModel = ViewModelProviders.of(this).get(ContactViewModel::class.java)
 
         // calling method to prepare our recycler view.
         prepareContactRV()
 
         // calling a method to request permissions.
         requestPermissions()
+        viewModel.getRealtimeUpdate()
+        viewModel.contact.observe(this, Observer {
+            contactsRVAdapter.contactsModelArrayList.add(it)
+        })
+        /*simpleCallBAck object is passed as a parameter of the itemTouchHelper object*/
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        /*attaching the item touch helper to our recycler view*/
+        itemTouchHelper.attachToRecyclerView(contactRV)
 
         // adding on click listener for our fab.
-        // adding on click listener for our fab.
         addNewContactFAB.setOnClickListener { // opening a new activity on below line.
-            val i = Intent(this@MainActivity, CreateNewContactActivity::class.java)
-            startActivity(i)
+            AddContactDialogFragment().show(supportFragmentManager, "addcontactfragment") // this brings up the add contact fragment
+        }
+    }
+
+    /*simpleCallBack method for swipping the recycler view items so as to update the info
+    * dragdirection is zero because we are not dragging*/
+    private var simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or (ItemTouchHelper.RIGHT)) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        /*specifing the position of the contact*/
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            var position = viewHolder.bindingAdapterPosition
+            // adapterPosition
+            var currentContact = contactsRVAdapter.contactsModelArrayList[position] // getting the current contact swipped
+
+            /*checking the direction swipped */
+            when (direction) {
+                /*when the swip direction is right we want to get the current contact and pass it as a parameter of the update function*/
+                ItemTouchHelper.RIGHT -> {
+                    UpdateContactDialogFragment(currentContact).show(supportFragmentManager, "updatecontact") // showing the update dialog fragment
+                }
+                ItemTouchHelper.LEFT -> {
+                    android.app.AlertDialog.Builder(this@MainActivity).also {
+                        it.setTitle("Are you sure you want to delete this contact?")
+                        it.setPositiveButton("Yes") { dialog, which ->
+                            viewModel.deleteContact(currentContact)
+                            contactRV.adapter?.notifyItemRemoved(position)
+                            Toast.makeText(this@MainActivity, "Contact has been deleted", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }.create().show()
+                }
+            }
+
+            contactRV.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -97,7 +149,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         var filteredlist = ArrayList<ContactsModel>()
         // on below line we are running a loop for checking if the item is present in array list.
         for (item: ContactsModel in contactsModelArrayList) {
-            if (item.userName.toLowerCase().contains(text.toLowerCase())) {
+            if (item.contactName?.toLowerCase()!!.contains(text.toLowerCase())) {
                 // on below line we are adding item to our filtered array list.
                 filteredlist.add(item)
             }
@@ -233,7 +285,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         )
         // on blow line we are checking the count for our cursor.
         if (cursor != null) {
-            if (cursor.getCount() > 0) {
+            if (cursor.count > 0) {
                 // if the count is greater than 0 then we are running a loop to move our cursor to next.
                 while (cursor.moveToNext()) {
                     // on below line we are getting the phone number.
@@ -250,6 +302,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         if (cursor != null) {
                             displayName =
                                 cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+
                         }
                         // on below line we are calling a content resolver and making a query
                         val phoneCursor: Cursor? = contentResolver.query(
@@ -260,12 +313,20 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                             null
                         )
                         // on below line we are moving our cursor to next position.
-                        if (phoneCursor != null) {
+                        if (phoneCursor != null) {3
                             if (phoneCursor.moveToNext()) {
                                 // on below line we are getting the phone number for our users and then adding the name along with phone number in array list.
                                 val phoneNumber: String =
                                     phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                                contactsModelArrayList.add(ContactsModel(displayName, phoneNumber))
+//                                contactsModelArrayList.add(ContactsModel(contactName = displayName, contactPhoneNumber = phoneNumber))
+                                Log.d("MainActivity", "$displayName")
+                                /*here we can also pass the contacts to the function that send our contacts the data base in the view model class*/
+                                var contact = ContactsModel()
+                                contact.contactName = displayName
+                                contact.contactPhoneNumber = phoneNumber
+
+                                contactsModelArrayList.add(contact)
+
                             }
                         }
                         // on below line we are closing our phone cursor.

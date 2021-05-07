@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Contacts</string>
     <string name="search">Search</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="add_full">Add Full</string>
+    <string name="add_contact_phonenumber">Add Contact PhoneNumber</string>
+    <string name="update">Update</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="contact_phonenumber">Contact PhoneNumber</string>
+    <string name="save_contact">Save Contact</string>
+    <string name="error">%1$s</string>
+    <string name="add_contact">the contact has been added successfuly</string>
 </resources>
